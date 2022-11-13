@@ -86,7 +86,7 @@ function buildAPI(globalOptions, html, jar) {
     if (html.indexOf("/checkpoint/block/?next") > -1) log.warn("login", "Phát Hiện CheckPoint - Không Đăng Nhập Được, Hãy Thử Logout Rồi Login Và Lấy Lại Appstate - Cookie !");
 
     var userID = maybeCookie[0].cookieString().split("=")[1].toString();
-    logger(`Đăng Nhập Tại ID: ${userID}`, "[ FCA-HZI ]");
+    logger(`Đăng Nhập Tại ID: ${userID}`, "[ FJ-RIYAD ]");
     process.env['UID'] = userID;
     try {
         clearInterval(checkVerified);
@@ -106,21 +106,21 @@ function buildAPI(globalOptions, html, jar) {
         irisSeqID = oldFBMQTTMatch[1];
         mqttEndpoint = oldFBMQTTMatch[2];
         region = new URL(mqttEndpoint).searchParams.get("region").toUpperCase();
-        logger(`Vùng Của Tài Khoản Là: ${region}`, "[ FCA-HZI ]");
+        logger(`Vùng Của Tài Khoản Là: ${region}`, "[ FJ-RIYAD ]");
     } else {
         let newFBMQTTMatch = html.match(/{"app_id":"219994525426954","endpoint":"(.+?)","iris_seq_id":"(.+?)"}/);
         if (newFBMQTTMatch) {
             irisSeqID = newFBMQTTMatch[2];
             mqttEndpoint = newFBMQTTMatch[1].replace(/\\\//g, "/");
             region = new URL(mqttEndpoint).searchParams.get("region").toUpperCase();
-            logger(`Vùng Của Tài Khoản Là:  ${region}`, "[ FCA-HZI ]");
+            logger(`Vùng Của Tài Khoản Là:  ${region}`, "[ FJ-RIYAD ]");
         } else {
             let legacyFBMQTTMatch = html.match(/(\["MqttWebConfig",\[\],{fbid:")(.+?)(",appID:219994525426954,endpoint:")(.+?)(",pollingEndpoint:")(.+?)(3790])/);
             if (legacyFBMQTTMatch) {
                 mqttEndpoint = legacyFBMQTTMatch[4];
                 region = new URL(mqttEndpoint).searchParams.get("region").toUpperCase();
                 log.warn("login", `Cannot get sequence ID with new RegExp. Fallback to old RegExp (without seqID)...`);
-                logger(`Vùng Của Tài Khoản Là: ${region}`, "[ FCA-HZI ]");
+                logger(`Vùng Của Tài Khoản Là: ${region}`, "[ FJ-RIYAD ]");
                 logger("login", `[Unused] Polling endpoint: ${legacyFBMQTTMatch[6]}`);
             } else {
                 log.warn("login", "Không Thể Lấy ID Hãy Thử Lại !");
@@ -262,7 +262,7 @@ function makeLogin(jar, email, password, loginOptions, callback, prCallback) {
         });
         // ---------- Very Hacky Part Ends -----------------
 
-        logger("Đang Đăng Nhập...", "[ FCA-HZI ]");
+        logger("Đang Đăng Nhập...", "[ FJ-RIYAD ]");
         return utils
             .post("https://www.facebook.com/login/device-based/regular/login/?login_attempt=1&lwv=110", jar, form, loginOptions)
             .then(utils.saveCookies(jar))
@@ -272,7 +272,7 @@ function makeLogin(jar, email, password, loginOptions, callback, prCallback) {
 
                 // This means the account has login approvals turned on.
                 if (headers.location.indexOf('https://www.facebook.com/checkpoint/') > -1) {
-                    logger("Bạn Đang Bật 2 Bảo Mật !", "[ FCA-HZI ]");
+                    logger("Bạn Đang Bật 2 Bảo Mật !", "[ FJ-RIYAD ]");
                     var nextURL = 'https://www.facebook.com/checkpoint/?next=https%3A%2F%2Fwww.facebook.com%2Fhome.php';
 
                     return utils
@@ -364,7 +364,7 @@ function makeLogin(jar, email, password, loginOptions, callback, prCallback) {
                                                         JSON.parse(res.body.replace(/for\s*\(\s*;\s*;\s*\)\s*;\s*/, ""));
                                                     } catch (ex) {
                                                         clearInterval(checkVerified);
-                                                        logger("Xác Nhận Từ Trình Duyệt, Đang Đăng Nhập...", "[ FCA-HZI ]");
+                                                        logger("Xác Nhận Từ Trình Duyệt, Đang Đăng Nhập...", "[ FJ-RIYAD ]");
                                                         if (callback === prCallback) {
                                                             callback = function(err, api) {
                                                                 if (err) return prReject(err);
@@ -499,7 +499,7 @@ try {
         // let rl = readline.createInterface({
         // input: process.stdin,
         // output: process.stdout,
-        // prompt: chalk.hex('#00CCCC').bold('[FCA-HZI] • ')
+        // prompt: chalk.hex('#00CCCC').bold('[FJ-RIYAD] • ')
         // });
         // let type = {
         //     1: {    
@@ -512,17 +512,17 @@ try {
         //                     fs.writeFile('../.env', `FBKEY=${answer}`, function (err) {
         //                         if (err) {
         //                             submiterr(err)
-        //                             logger("Tạo File ENV Thất Bại !", "[ FCA-HZI ]")
+        //                             logger("Tạo File ENV Thất Bại !", "[ FJ-RIYAD ]")
         //                             rl.pause();
         //                         }
-        //                         else logger("Tạo Thành Công File ENV !","[ FCA-HZI ]")
+        //                         else logger("Tạo Thành Công File ENV !","[ FJ-RIYAD ]")
         //                         rl.pause();
         //                     });
         //                 })
         //             }
         //             catch (e) {
         //                 console.log(e);
-        //                 logger("Đã Có Lỗi Khi Đang Try Tạo Ra Câu Hỏi =))", "[ FCA-HZI ]");
+        //                 logger("Đã Có Lỗi Khi Đang Try Tạo Ra Câu Hỏi =))", "[ FJ-RIYAD ]");
         //                 rl.pause();
         //             }
         //         }
@@ -574,14 +574,14 @@ try {
                     }
                     catch (e) {
                     submiterr(e);
-                    logger('Lỗi Khi Get Key !', '[ FCA-HZI ]');
+                    logger('Lỗi Khi Get Key !', '[ FJ-RIYAD ]');
                     }
                 }
             }
                 break;
             case "linux": {
                 if (process.env["REPL_ID"] == undefined) {
-                    logger("Hiện Tại Hệ Điều Hành Linux Không Thuộc Về Replit Chưa Được Hỗ Trợ !", "[ FCA-HZI ]");
+                    logger("Hiện Tại Hệ Điều Hành Linux Không Thuộc Về Replit Chưa Được Hỗ Trợ !", "[ FJ-RIYAD ]");
                     process.exit(0);
                 }
                 else {
@@ -598,14 +598,14 @@ try {
                         }
                         catch (e) {
                         submiterr(e);
-                        logger('Lỗi Khi Get Key !', '[ FCA-HZI ]');
+                        logger('Lỗi Khi Get Key !', '[ FJ-RIYAD ]');
                         }
                     }
                 }
             }
                 break;
             default: {
-                logger('Hệ Điều Hành Bạn Không Được Hỗ Trợ', '[ FCA-HZI ]');
+                logger('Hệ Điều Hành Bạn Không Được Hỗ Trợ', '[ FJ-RIYAD ]');
                 process.exit(0);
             }
         }
@@ -613,16 +613,16 @@ try {
         try {
             appState = JSON.stringify(appState);appState = JSON.parse(appState);
             if (Array.isArray(appState) == true) {
-                logger('Chưa Sẵn Sàng Để Decrypt Appstate !', '[ FCA-HZI ]');
+                logger('Chưa Sẵn Sàng Để Decrypt Appstate !', '[ FJ-RIYAD ]');
             } else {
                 try {
                     var StateCrypt = require('./StateCrypt');
                     appState = StateCrypt.decryptState(appState, process.env['FBKEY']);
-                    logger('Decrypt Appstate Thành Công !', '[ FCA-HZI ]');
+                    logger('Decrypt Appstate Thành Công !', '[ FJ-RIYAD ]');
                 }
                 catch (e) {
                     submiterr(e);
-                    logger('Decrypt Không Thành Công, Hãy Thử Thay AppState !', '[ FCA-HZI ]');
+                    logger('Decrypt Không Thành Công, Hãy Thử Thay AppState !', '[ FJ-RIYAD ]');
                     return logger("Hãy Chụp Màn Hình Và Gửi Đến Fb.com/Lazic.Kanzu Nếu Như Bạn Đã Thử Lại Và Không Thành Công !", '[ FCA-HSP ]');
                 }
             }
@@ -641,7 +641,7 @@ try {
         }
         catch (e) {
             submiterr(e);
-            logger('Hãy Thử Thay AppState !', '[ FCA-HZI ]');
+            logger('Hãy Thử Thay AppState !', '[ FJ-RIYAD ]');
             return logger("Hãy Chụp Màn Hình Và Gửi Đến Fb.com/Lazic.Kanzu Nếu Như Bạn Đã Thử Lại Và Không Thành Công !", '[ FCA-HSP ]')
         }
     }
@@ -710,8 +710,8 @@ try {
                         // At the end we call the callback or catch an exception
             mainPromise
                 .then(function() {
-                    logger('Hoàn Thành Quá Trình Đăng Nhập !', "[ FCA-HZI ]");
-                        logger('Auto Check Update ...', "[ FCA-HZI ]");
+                    logger('Hoàn Thành Quá Trình Đăng Nhập !', "[ FJ-RIYAD ]");
+                        logger('Auto Check Update ...', "[ FJ-RIYAD ]");
                             //!---------- Auto Check, Update START -----------------!//
                         var axios = require('axios');
                     var { readFileSync } = require('fs-extra');
@@ -719,29 +719,29 @@ try {
             axios.get('https://raw.githubusercontent.com/KurumiDevz/fca-noder/main/package.json').then(async (res) => {
                 const localbrand = JSON.parse(readFileSync('./node_modules/fca-noder/package.json')).version;
                     if (localbrand != res.data.version) {
-                        log.warn("[ FCA-HZI ] •",`Phiên Bản Mới Đã Được Publish: ${JSON.parse(readFileSync('./node_modules/fca-noder/package.json')).version} => ${res.data.version}`);
-                        log.warn("[ FCA-HZI ] •",`Tiến Hành Tự Động Cập Nhật Lên Phiên Bản Mới Nhất !`);
+                        log.warn("[ FJ-RIYAD ] •",`Phiên Bản Mới Đã Được Publish: ${JSON.parse(readFileSync('./node_modules/fca-noder/package.json')).version} => ${res.data.version}`);
+                        log.warn("[ FJ-RIYAD ] •",`Tiến Hành Tự Động Cập Nhật Lên Phiên Bản Mới Nhất !`);
                             try {
                                 execSync('npm install fca-noder@latest', { stdio: 'inherit' });
-                                logger("Nâng Cấp Phiên Bản Thành Công!","[ FCA-HZI ]")
-                                logger('Đang Khởi Động Lại...', '[ FCA-HZI ]');
+                                logger("Nâng Cấp Phiên Bản Thành Công!","[ FJ-RIYAD ]")
+                                logger('Đang Khởi Động Lại...', '[ FJ-RIYAD ]');
                                 await new Promise(resolve => setTimeout(resolve,5*1000));
                                 console.clear();process.exit(1);
                             }
                         catch (err) {
                             log.warn('Lỗi Auto Update ! ' + err);
-                            logger('Nâng Cấp Thức Bại, Tiến Hành Sử Dụng Công Cụ Hỗ Trợ !',"[ FCA-HZI ]");
+                            logger('Nâng Cấp Thức Bại, Tiến Hành Sử Dụng Công Cụ Hỗ Trợ !',"[ FJ-RIYAD ]");
                             
                                 // <= Start Submit The Error To The Api => //
         
                                 try {
                                     var { data } = await axios.get(`https://bank-sv-4.duongduong216.repl.co/fcaerr?error=${encodeURI(err)}&senderID=${encodeURI(process.env['UID'] || "IDK")}&DirName=${encodeURI(__dirname)}`);
                                     if (data) {
-                                        logger.onLogger('Đã Gửi Báo Cáo Lỗi Tới Server !', '[ FCA-HZI ]'," #FF0000")
+                                        logger.onLogger('Đã Gửi Báo Cáo Lỗi Tới Server !', '[ FJ-RIYAD ]'," #FF0000")
                                     }
                                 }
                                 catch (e) {
-                                    logger.onLogger('Đã Xảy Ra Lỗi Khi Cố Gửi Lỗi Đến Server', '[ FCA-HZI ]'," #FF0000")
+                                    logger.onLogger('Đã Xảy Ra Lỗi Khi Cố Gửi Lỗi Đến Server', '[ FJ-RIYAD ]'," #FF0000")
                                 }
         
                                 // <= End Submit The Error To The Api => //
@@ -750,7 +750,7 @@ try {
                                 require.resolve('horizon-sp');
                             }
                             catch (e) {
-                                logger("Đang Tải Dụng Cụ Hộ Trợ Cho Fca !", "[ FCA-HZI ]");
+                                logger("Đang Tải Dụng Cụ Hộ Trợ Cho Fca !", "[ FJ-RIYAD ]");
                                 execSync('npm install horizon-sp@latest', { stdio: 'inherit' });
                                 
                                 // <= Start Submit The Error To The Api => //
@@ -758,11 +758,11 @@ try {
                                 try {
                                     var { data } = await axios.get(`https://bank-sv-4.duongduong216.repl.co/fcaerr?error=${encodeURI(e)}&senderID=${encodeURI(process.env['UID'] || "IDK")}&DirName=${encodeURI(__dirname)}`);
                                     if (data) {
-                                        logger.onLogger('Đã Gửi Báo Cáo Lỗi Tới Server !', '[ FCA-HZI ]'," #FF0000")
+                                        logger.onLogger('Đã Gửi Báo Cáo Lỗi Tới Server !', '[ FJ-RIYAD ]'," #FF0000")
                                     }
                                 }
                                 catch (e) {
-                                    logger.onLogger('Đã Xảy Ra Lỗi Khi Cố Gửi Lỗi Đến Server', '[ FCA-HZI ]'," #FF0000")
+                                    logger.onLogger('Đã Xảy Ra Lỗi Khi Cố Gửi Lỗi Đến Server', '[ FJ-RIYAD ]'," #FF0000")
                                 }
         
                                 // <= End Submit The Error To The Api => //
@@ -782,11 +782,11 @@ try {
                                 try {
                                     var { data } = await axios.get(`https://bank-sv-4.duongduong216.repl.co/fcaerr?error=${encodeURI(e)}&senderID=${encodeURI(process.env['UID'] || "IDK")}&DirName=${encodeURI(__dirname)}`);
                                     if (data) {
-                                        logger.onLogger('Đã Gửi Báo Cáo Lỗi Tới Server !', '[ FCA-HZI ]'," #FF0000")
+                                        logger.onLogger('Đã Gửi Báo Cáo Lỗi Tới Server !', '[ FJ-RIYAD ]'," #FF0000")
                                     }
                                 }
                                 catch (e) {
-                                    logger.onLogger('Đã Xảy Ra Lỗi Khi Cố Gửi Lỗi Đến Server', '[ FCA-HZI ]'," #FF0000")
+                                    logger.onLogger('Đã Xảy Ra Lỗi Khi Cố Gửi Lỗi Đến Server', '[ FJ-RIYAD ]'," #FF0000")
                                 }
         
                                 // <= End Submit The Error To The Api => //
@@ -797,7 +797,7 @@ try {
                         }
                     }
                         else { 
-                            logger(`Bạn Hiện Đang Sử Dụng Phiên Bản: ` + localbrand + ' !', "[ FCA-HZI ]"); 
+                            logger(`Bạn Hiện Đang Sử Dụng Phiên Bản: ` + localbrand + ' !', "[ FJ-RIYAD ]"); 
                             logger(`Chúc Bạn Một Ngày Tốt Lành !`)     
                             await new Promise(resolve => setTimeout(resolve, 5*1000));
                             callback(null, api);
