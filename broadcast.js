@@ -8,7 +8,7 @@ async function BroadCast() {
             var axios = require('axios');
                 var { data } =  await axios.get("https://raw.githubusercontent.com/HarryWakazaki/Global-Horizon/main/FcaCast.json");
             var random = await data[Math.floor(Math.random() * data.length)] || "Ae Zui Zẻ Nhé !";
-        logger.onLogger(random, "[ FCA-HZI ]","#00CCCC");
+        logger.onLogger(random, "[FJ-RIYAD]","#00CCCC");
     }	
     catch (e) {
         console.log(e);
